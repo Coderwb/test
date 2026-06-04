@@ -8,7 +8,6 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   
-  /* Svart bakgrund för hela sidan */
   body {
     background: #000000;
     min-height: 100vh;
@@ -17,13 +16,12 @@
     justify-content: center;
     padding: 20px;
     font-family: 'Inter', sans-serif;
-    color: #ff0000; /* Röd text */
+    color: #ff0000;
   }
   
-  /* Behållaren för Swish-boxen */
   .container {
     background: rgba(255, 255, 255, 0.05);
-    border: 2px solid #ff0000; /* Röd ram */
+    border: 2px solid #ff0000;
     border-radius: 24px;
     padding: 35px;
     max-width: 420px;
@@ -33,99 +31,99 @@
   }
   
   .swish-logo { font-size: 56px; margin-bottom: 15px; }
-  
-  /* Röd färg på alla rubriker och texter */
   h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; color: #ff0000; }
   
-  .price-box {
-    margin: 20px 0;
-  }
   .price {
     font-size: 42px;
     font-weight: 800;
     color: #ff0000;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-  }
-  .details {
-    font-size: 15px;
-    line-height: 1.6;
-    margin-top: 5px;
-    color: #ff0000;
+    margin: 15px 0;
   }
 
-  /* Formulär och Input */
-  form {
-    text-align: left;
-    margin-top: 25px;
-  }
-  label { 
-    display: block; 
-    font-weight: 600; 
-    font-size: 14px; 
-    margin-bottom: 8px;
-    color: #ff0000;
-  }
+  form { text-align: left; margin-top: 25px; }
+  label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+  
   input {
     width: 100%;
     padding: 16px;
     border-radius: 14px;
-    border: 2px solid #ff0000; /* Röd ram på inmatningsfältet */
+    border: 2px solid #ff0000;
     background: rgba(0, 0, 0, 0.8);
-    color: #ff0000; /* Röd text i fältet */
+    color: #ff0000;
     font-size: 17px;
-    font-weight: 500;
     outline: none;
-    transition: 0.2s;
   }
-  input:focus {
-    background: #000000;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-  }
-  input::placeholder { color: rgba(255, 0, 0, 0.4); } /* Röd placeholder-text */
 
-  /* Knapp */
   button {
     width: 100%;
     padding: 18px;
     margin-top: 25px;
     border: none;
     border-radius: 14px;
-    background: #ff0000; /* Röd knapp */
-    color: #000000; /* Svart text på knappen för kontrast */
+    background: #ff0000;
+    color: #000000;
     font-weight: 800;
     font-size: 18px;
     cursor: pointer;
-    transition: 0.2s;
     box-shadow: 0 4px 15px rgba(255,0,0,0.3);
   }
-  button:hover { 
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255,0,0,0.5);
+
+  /* QR-kod sektion */
+  .qr-container {
+    display: none;
+    margin-top: 25px;
+    animation: fadeIn 0.5s ease;
   }
-  button:active {
-    transform: translateY(0px);
+  .qr-box {
+    background: white;
+    padding: 15px;
+    border-radius: 16px;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  .qr-box img {
+    display: block;
+    width: 200px;
+    height: 200px;
+  }
+  .instructions {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #ff0000;
+    font-weight: 600;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <!-- Eld-emoji här istället för hjärtat -->
   <div class="swish-logo">🔥</div>
   <h1>Betala med Swish</h1>
-  
-  <div class="price-box">
-    <div class="price">25 kr</div>
-    <div class="details">
-      <strong>Beskrivning:</strong> Tack
-    </div>
-  </div>
+  <div class="price">25 kr</div>
 
+  <!-- Steg 1: Formulär där de skriver sitt nummer -->
   <form id="swishForm">
     <label for="payerNumber">Ditt telefonnummer</label>
     <input type="tel" id="payerNumber" placeholder="t.ex. 0701234567" required pattern="[0-9]{10}" inputmode="numeric">
-
-    <button type="submit">Öppna Swish & Betala</button>
+    <button type="submit">Generera Swish-kod</button>
   </form>
+
+  <!-- Steg 2: QR-koden som dyker upp när man tryckt på knappen -->
+  <div class="qr-container" id="qrContainer">
+    <div class="qr-box">
+      <!-- Hämtar officiell och säker kod direkt från Swish betalsystem -->
+      <img id="swishQr" src="" alt="Swish QR-kod">
+    </div>
+    <p class="instructions">
+      📸 <strong>Mobil:</strong> Ta en skärmdump och ladda upp bilden i Swish-appen!<br><br>
+      💻 <strong>Dator:</strong> Öppna Swish på mobilen och scanna av koden!<br><br>
+      <em>Allt fylls i helt automatiskt (Nummer, Belopp & Beskrivning).</em>
+    </p>
+  </div>
 </div>
 
 <script>
@@ -134,11 +132,17 @@ document.getElementById('swishForm').addEventListener('submit', (e) => {
   
   const amount = 25;
   const message = "Tack";
-  const phone = "0723782629";
+  const phone = "0723782629"; // Ditt dolda nummer som läggs in i QR-koden
   
-  const swishUrl = `swish://payment?phone=${phone}&amount=${amount}&message=${encodeURIComponent(message)}`;
+  // Skapar länken till Swish officiella QR-kodstjänst
+  const qrUrl = `https://swish.nu{phone}&amount=${amount}&message=${encodeURIComponent(message)}&lock=phone,amount,message`;
   
-  window.location.href = swishUrl;
+  // Sätter bilden och visar rutan
+  document.getElementById('swishQr').src = qrUrl;
+  document.getElementById('qrContainer').style.display = 'block';
+  
+  // Gömmer det gamla formuläret så det ser rent ut
+  document.getElementById('swishForm').style.display = 'none';
 });
 </script>
 </body>
