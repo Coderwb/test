@@ -50,7 +50,7 @@
   /* Formulär och Input */
   form {
     text-align: left;
-    margin-top: 20px;
+    margin-top: 25px;
   }
   label { 
     display: block; 
@@ -109,7 +109,7 @@
   <div class="price-box">
     <div class="price">25 kr</div>
     <div class="details">
-      <strong>Till:</strong> 072-378 26 29<br>
+      <!-- Ditt nummer är borttaget härifrån -->
       <strong>Beskrivning:</strong> Tack
     </div>
   </div>
@@ -129,17 +129,12 @@ document.getElementById('swishForm').addEventListener('submit', (e) => {
   
   const amount = 25;
   const message = "Tack";
-  const phone = "0723782629";
+  const phone = "0723782629"; // Numret laddas bara här i bakgrunden
   
-  // Öppnar Swish-appen med alla parametrar laddade i bakgrunden
+  // Öppnar Swish-appen och skickar med alla dolda uppgifter till appen
   const swishUrl = `swish://payment?phone=${phone}&amount=${amount}&message=${encodeURIComponent(message)}`;
   
   window.location.href = swishUrl;
-
-  // Reservmeddelande om appen inte öppnas automatiskt
-  setTimeout(() => {
-    alert('Om Swish-appen inte öppnades automatiskt, vänligen öppna den manuellt och swisha 25 kr till 0723782629 med meddelandet "Tack".');
-  }, 1500);
 });
 </script>
 </body>
