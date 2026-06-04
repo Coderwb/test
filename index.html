@@ -28,8 +28,15 @@
     box-shadow: 0 8px 32px rgba(0,0,0,0.25);
     text-align: center;
   }
-  .swish-logo { font-size: 56px; margin-bottom: 15px; }
-  h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+  .swish-logo { 
+    font-size: 56px; 
+    margin-bottom: 15px; 
+  }
+  h1 { 
+    font-size: 26px; 
+    font-weight: 800; 
+    margin-bottom: 8px; 
+  }
   .price {
     font-size: 42px;
     font-weight: 800;
@@ -37,7 +44,11 @@
     margin: 15px 0;
     text-shadow: 0 2px 8px rgba(0,0,0,0.2);
   }
-  p { opacity: 0.9; margin-bottom: 25px; font-size: 15px; }
+  p { 
+    opacity: 0.9; 
+    margin-bottom: 25px; 
+    font-size: 15px;
+  }
   label { 
     display: block; 
     margin-top: 15px; 
@@ -55,6 +66,7 @@
     background: rgba(255,255,255,0.15);
     color: white;
     font-size: 17px;
+    text-align: left;
     font-weight: 500;
   }
   input:focus {
@@ -62,7 +74,9 @@
     border-color: white;
     background: rgba(255,255,255,0.2);
   }
-  input::placeholder { color: rgba(255,255,255,0.7); }
+  input::placeholder { 
+    color: rgba(255,255,255,0.7); 
+  }
   button {
     width: 100%;
     padding: 18px;
@@ -77,8 +91,60 @@
     transition: 0.2s;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   }
-  button:hover { transform: translateY(-2px); }
+  button:hover { 
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+  button:active {
+    transform: translateY(0px);
+  }
   .info {
     margin-top: 20px;
     padding: 14px;
-    background: rgba(255, 255, 255, 0
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="swish-logo">💚</div>
+  <h1>Betala med Swish</h1>
+  <div class="price">25 kr</div>
+  <p>Till: 072-378 26 29</p>
+
+  <form id="swishForm">
+    <label>Ditt telefonnummer</label>
+    <input type="tel" id="payerNumber" placeholder="0701234567" required pattern="[0-9]{10}" inputmode="numeric">
+
+    <button type="submit">Betala nu!</button>
+  </form>
+
+  <div class="info">
+    Beskrivning i Swish: <strong>Beställning</strong><br>
+    Kan inte ändras
+  </div>
+</div>
+
+<script>
+document.getElementById('swishForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const amount = 25;
+  const message = "Beställning";
+  const phone = "0723782629";
+  
+  // Öppnar Swish med låst beskrivning
+  const swishUrl = `swish://payment?phone=${phone}&amount=${amount}&message=${encodeURIComponent(message)}`;
+  
+  window.location.href = swishUrl;
+
+  setTimeout(() => {
+    alert('Kunde inte öppna Swish. Öppna Swish-appen manuellt och swisha 25 kr till 0723782629 med meddelande "Beställning".');
+  }, 1500);
+});
+</script>
+</body>
+</html>
