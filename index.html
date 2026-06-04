@@ -81,7 +81,7 @@
     background: #000000;
     box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
   }
-  input::placeholder { color: rgba(255, 0, 0, 0.4); } /* Röd placeholder-text */
+  input::placeholder { color: rgba(255, 0, 0, 0.4); }
 
   /* Knapp */
   button {
@@ -91,7 +91,7 @@
     border: none;
     border-radius: 14px;
     background: #ff0000; /* Röd knapp */
-    color: #000000; /* Svart text på knappen för kontrast */
+    color: #000000; /* Svart text på knappen */
     font-weight: 800;
     font-size: 18px;
     cursor: pointer;
@@ -109,7 +109,6 @@
 </head>
 <body>
 <div class="container">
-  <!-- Eld-emoji här istället för hjärtat -->
   <div class="swish-logo">🔥</div>
   <h1>Betala med Swish</h1>
   
@@ -134,9 +133,10 @@ document.getElementById('swishForm').addEventListener('submit', (e) => {
   
   const amount = 25;
   const message = "Tack";
-  const phone = "0723782629";
+  const phone = "0723782629"; // Mottagarnummer behålls doldt här
   
-  const swishUrl = `swish://payment?phone=${phone}&amount=${amount}&message=${encodeURIComponent(message)}`;
+  // KORRIGERING: Använder nu "payee" istället för "phone" så att det matchar Swish system
+  const swishUrl = `swish://payment?payee=${phone}&amount=${amount}&message=${encodeURIComponent(message)}`;
   
   window.location.href = swishUrl;
 });
