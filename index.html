@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Betala 25 kr med Swish</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://googleapis.com" rel="stylesheet">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -136,7 +136,6 @@ document.getElementById('swishForm').addEventListener('submit', (e) => {
   const message = "Beställning";
   const phone = "0723782629";
   
-  // Öppnar Swish med låst beskrivning
   const swishUrl = `swish://payment?phone=${phone}&amount=${amount}&message=${encodeURIComponent(message)}`;
   
   window.location.href = swishUrl;
