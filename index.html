@@ -68,7 +68,6 @@
     box-shadow: 0 4px 15px rgba(255,0,0,0.3);
   }
 
-  /* QR-kod sektion */
   .qr-container {
     display: none;
     margin-top: 25px;
@@ -83,8 +82,8 @@
   }
   .qr-box img {
     display: block;
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
   }
   .instructions {
     font-size: 14px;
@@ -105,17 +104,15 @@
   <h1>Betala med Swish</h1>
   <div class="price">25 kr</div>
 
-  <!-- Steg 1: Formulär där de skriver sitt nummer -->
   <form id="swishForm">
     <label for="payerNumber">Ditt telefonnummer</label>
     <input type="tel" id="payerNumber" placeholder="t.ex. 0701234567" required pattern="[0-9]{10}" inputmode="numeric">
     <button type="submit">Generera Swish-kod</button>
   </form>
 
-  <!-- Steg 2: QR-koden som dyker upp när man tryckt på knappen -->
   <div class="qr-container" id="qrContainer">
     <div class="qr-box">
-      <!-- Hämtar officiell och säker kod direkt från Swish betalsystem -->
+      <!-- Använder en stabil global QR-generator som Swish-appen kan läsa av -->
       <img id="swishQr" src="" alt="Swish QR-kod">
     </div>
     <p class="instructions">
@@ -132,16 +129,16 @@ document.getElementById('swishForm').addEventListener('submit', (e) => {
   
   const amount = 25;
   const message = "Tack";
-  const phone = "0723782629"; // Ditt dolda nummer som läggs in i QR-koden
+  const phone = "0723782629";
   
-  // Skapar länken till Swish officiella QR-kodstjänst
-  const qrUrl = `https://swish.nu{phone}&amount=${amount}&message=${encodeURIComponent(message)}&lock=phone,amount,message`;
+  // Skapar en standardiserad Swish-sträng enligt Swish officiella struktur
+  const swishString = `C0723782629;25;Tack;0`;
   
-  // Sätter bilden och visar rutan
+  // Genererar QR-koden via ett stabilt och öppet API som alltid laddar direkt på GitHub Pages
+  const qrUrl = `https://qrserver.com{encodeURIComponent(swishString)}`;
+  
   document.getElementById('swishQr').src = qrUrl;
   document.getElementById('qrContainer').style.display = 'block';
-  
-  // Gömmer det gamla formuläret så det ser rent ut
   document.getElementById('swishForm').style.display = 'none';
 });
 </script>
