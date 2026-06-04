@@ -30,42 +30,58 @@
   }
   .swish-logo { font-size: 56px; margin-bottom: 15px; }
   h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+  
+  .price-box {
+    margin: 20px 0;
+  }
   .price {
     font-size: 42px;
     font-weight: 800;
     color: #fff;
-    margin: 15px 0;
     text-shadow: 0 2px 8px rgba(0,0,0,0.2);
   }
-  p { opacity: 0.9; margin-bottom: 25px; font-size: 16px; }
-  
-  /* Kopieringsrutan för meddelandet */
-  .msg-box {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 14px;
-    padding: 12px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .msg-text { font-weight: 600; font-size: 16px; }
-  .copy-btn {
-    background: white;
-    color: #00B86C;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 800;
-    cursor: pointer;
+  .details {
+    font-size: 15px;
+    opacity: 0.9;
+    line-height: 1.6;
+    margin-top: 5px;
   }
 
-  /* Huvudknappen */
-  .main-btn {
+  /* Formulär och Input */
+  form {
+    text-align: left;
+    margin-top: 20px;
+  }
+  label { 
+    display: block; 
+    font-weight: 600; 
+    font-size: 14px; 
+    opacity: 0.95;
+    margin-bottom: 8px;
+  }
+  input {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 17px;
+    font-weight: 500;
+    outline: none;
+    transition: 0.2s;
+  }
+  input:focus {
+    border-color: white;
+    background: rgba(255,255,255,0.2);
+  }
+  input::placeholder { color: rgba(255,255,255,0.6); }
+
+  /* Knapp */
+  button {
     width: 100%;
     padding: 18px;
+    margin-top: 25px;
     border: none;
     border-radius: 14px;
     background: white;
@@ -76,19 +92,12 @@
     transition: 0.2s;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   }
-  .main-btn:hover { 
+  button:hover { 
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
   }
-  .info {
-    margin-top: 20px;
-    padding: 14px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 600;
-    text-align: center;
-    opacity: 0.9;
+  button:active {
+    transform: translateY(0px);
   }
 </style>
 </head>
@@ -96,47 +105,41 @@
 <div class="container">
   <div class="swish-logo">💚</div>
   <h1>Betala med Swish</h1>
-  <div class="price">25 kr</div>
-  <p><strong>Till:</strong> 072-378 26 29</p>
-
-  <!-- Kopiera meddelande sektion -->
-  <div class="msg-box">
-    <span>Meddelande: <strong class="msg-text" id="msgToCopy">Tack</strong></span>
-    <button class="copy-btn" id="copyBtn">KOPIERA</button>
+  
+  <div class="price-box">
+    <div class="price">25 kr</div>
+    <div class="details">
+      <strong>Till:</strong> 072-378 26 29<br>
+      <strong>Beskrivning:</strong> Tack
+    </div>
   </div>
 
-  <button class="main-btn" id="swishBtn">Öppna Swish & Betala</button>
+  <!-- Formulär där användaren skriver sitt nummer -->
+  <form id="swishForm">
+    <label for="payerNumber">Ditt telefonnummer</label>
+    <input type="tel" id="payerNumber" placeholder="t.ex. 0701234567" required pattern="[0-9]{10}" inputmode="numeric">
 
-  <div class="info">
-    Klicka på KOPIERA först, klistra sedan in i Swish-appen om fältet är tomt!
-  </div>
+    <button type="submit">Öppna Swish & Betala</button>
+  </form>
 </div>
 
 <script>
-// Funktion för att kopiera meddelandet "Tack"
-document.getElementById('copyBtn').addEventListener('click', () => {
-  const text = document.getElementById('msgToCopy').innerText;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copyBtn');
-    btn.innerText = 'KOPIERAT!';
-    btn.style.background = '#007A47';
-    btn.style.color = 'white';
-    setTimeout(() => {
-      btn.innerText = 'KOPIERA';
-      btn.style.background = 'white';
-      btn.style.color = '#00B86C';
-    }, 2000);
-  });
-});
-
-// Funktion för att öppna Swish-appen
-document.getElementById('swishBtn').addEventListener('click', () => {
+document.getElementById('swishForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
   const amount = 25;
   const message = "Tack";
   const phone = "0723782629";
   
+  // Öppnar Swish-appen med alla parametrar laddade i bakgrunden
   const swishUrl = `swish://payment?phone=${phone}&amount=${amount}&message=${encodeURIComponent(message)}`;
+  
   window.location.href = swishUrl;
+
+  // Reservmeddelande om appen inte öppnas automatiskt
+  setTimeout(() => {
+    alert('Om Swish-appen inte öppnades automatiskt, vänligen öppna den manuellt och swisha 25 kr till 0723782629 med meddelandet "Tack".');
+  }, 1500);
 });
 </script>
 </body>
