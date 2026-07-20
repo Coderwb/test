@@ -1,146 +1,237 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Betala 25 kr med Swish</title>
-<link href="https://googleapis.com" rel="stylesheet">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  body {
-    background: #000000;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    font-family: 'Inter', sans-serif;
-    color: #ff0000;
-  }
-  
-  .container {
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid #ff0000;
-    border-radius: 24px;
-    padding: 35px;
-    max-width: 420px;
-    width: 100%;
-    box-shadow: 0 8px 32px rgba(255,0,0,0.1);
-    text-align: center;
-  }
-  
-  .swish-logo { font-size: 56px; margin-bottom: 15px; }
-  h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; color: #ff0000; }
-  
-  .price {
-    font-size: 42px;
-    font-weight: 800;
-    color: #ff0000;
-    margin: 15px 0;
-  }
-
-  form { text-align: left; margin-top: 25px; }
-  label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 8px; }
-  
-  input {
-    width: 100%;
-    padding: 16px;
-    border-radius: 14px;
-    border: 2px solid #ff0000;
-    background: rgba(0, 0, 0, 0.8);
-    color: #ff0000;
-    font-size: 17px;
-    outline: none;
-  }
-
-  button {
-    width: 100%;
-    padding: 18px;
-    margin-top: 25px;
-    border: none;
-    border-radius: 14px;
-    background: #ff0000;
-    color: #000000;
-    font-weight: 800;
-    font-size: 18px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255,0,0,0.3);
-  }
-
-  .qr-container {
-    display: none;
-    margin-top: 25px;
-    animation: fadeIn 0.5s ease;
-  }
-  .qr-box {
-    background: white;
-    padding: 15px;
-    border-radius: 16px;
-    display: inline-block;
-    margin-bottom: 15px;
-  }
-  .qr-box img {
-    display: block;
-    width: 220px;
-    height: 220px;
-  }
-  .instructions {
-    font-size: 14px;
-    line-height: 1.5;
-    color: #ff0000;
-    font-weight: 600;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Min Trädgårdsservice - Boxholm</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,255,0,0.1);
+        }
+        h1 { color: #4CAF50; font-size: 2.5rem; margin-bottom: 5px; }
+        .location-badge {
+            background-color: #ff9800;
+            color: black;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .subtitle { color: #888; margin-bottom: 25px; }
+        .price-box {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 5px solid #4CAF50;
+            text-align: left;
+        }
+        .price-box h3 { margin-top: 0; color: #4CAF50; }
+        .input-group {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .input-group label { margin-right: 10px; font-size: 14px; color: #ccc; }
+        input[type="number"], input[type="text"], input[type="date"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+        }
+        input[type="number"] { width: 80px; }
+        input[type="text"], input[type="date"] { width: 100%; box-sizing: border-box; }
+        .checkbox-group {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .total-section {
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 25px;
+            border: 1px dashed #4CAF50;
+        }
+        .total-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .btn-pay {
+            background-color: transparent;
+            color: #ff3333;
+            border: 3px solid #ff3333;
+            padding: 15px 32px;
+            font-size: 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+        .btn-pay:hover {
+            background-color: #ff3333;
+            color: white;
+        }
+    </style>
 </head>
 <body>
+
 <div class="container">
-  <div class="swish-logo">🔥</div>
-  <h1>Betala med Swish</h1>
-  <div class="price">25 kr</div>
+    <h1>Hjälp i Trädgården! 🌿</h1>
+    <div class="location-badge">📍 GÄLLER ENDAST I BOXHOLM</div>
+    <p class="subtitle">Boka, välj dag och räkna ut ditt pris direkt nedanför</p>
 
-  <form id="swishForm">
-    <label for="payerNumber">Ditt telefonnummer</label>
-    <input type="tel" id="payerNumber" placeholder="t.ex. 0701234567" required pattern="[0-9]{10}" inputmode="numeric">
-    <button type="submit">Generera Swish-kod</button>
-  </form>
-
-  <div class="qr-container" id="qrContainer">
-    <div class="qr-box">
-      <!-- Använder en stabil global QR-generator som Swish-appen kan läsa av -->
-      <img id="swishQr" src="" alt="Swish QR-kod">
+    <!-- NAMN -->
+    <div class="price-box" style="border-left-color: #4CAF50;">
+        <h3>👤 Ditt namn</h3>
+        <input type="text" id="namn" placeholder="Ex: Aron Nordqvist">
     </div>
-    <p class="instructions">
-      📸 <strong>Mobil:</strong> Ta en skärmdump och ladda upp bilden i Swish-appen!<br><br>
-      💻 <strong>Dator:</strong> Öppna Swish på mobilen och scanna av koden!<br><br>
-      <em>Allt fylls i helt automatiskt (Nummer, Belopp & Beskrivning).</em>
-    </p>
-  </div>
+
+    <!-- Adress -->
+    <div class="price-box" style="border-left-color: #ff9800;">
+        <h3>🏡 Din adress i Boxholm</h3>
+        <input type="text" id="adress" placeholder="Ex: Storgatan 12">
+    </div>
+
+    <!-- Datum -->
+    <div class="price-box" style="border-left-color: #00bcd4;">
+        <h3>📅 Välj dag</h3>
+        <input type="date" id="datum" onchange="kollaBokatDatum()">
+    </div>
+
+    <!-- Trimma -->
+    <div class="price-box">
+        <h3>✂️ Trimma trädgården</h3>
+        <p>20 kr per 10 meter</p>
+        <div class="input-group">
+            <input type="number" id="trim" min="0" step="10" value="0"
+            oninput="raknaUtPris()" onchange="valideraSteg(this, 10)">
+        </div>
+    </div>
+
+    <!-- Ogräs -->
+    <div class="price-box">
+        <h3>🌱 Rensa ogräs</h3>
+        <p>50 kr för 15 meter</p>
+        <div class="input-group">
+            <input type="number" id="ogras" min="0" step="15" value="0"
+            oninput="raknaUtPris()" onchange="valideraSteg(this, 15)">
+        </div>
+    </div>
+
+    <!-- Vattna -->
+    <div class="price-box">
+        <h3>💧 Vattna växter</h3>
+        <p>300 kr för ALLA växter</p>
+        <div class="checkbox-group">
+            <input type="checkbox" id="vattna" onchange="raknaUtPris()">
+            <label>Ja tack</label>
+        </div>
+    </div>
+
+    <div class="total-section">
+        <div class="total-price"><span id="summa">0</span> kr</div>
+    </div>
+
+    <button class="btn-pay" onclick="oppnaSwish()">Betala Med Swish</button>
 </div>
 
 <script>
-document.getElementById('swishForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  
-  const amount = 25;
-  const message = "Tack";
-  const phone = "0723782629";
-  
-  // Skapar en standardiserad Swish-sträng enligt Swish officiella struktur
-  const swishString = `C0723782629;25;Tack;0`;
-  
-  // Genererar QR-koden via ett stabilt och öppet API som alltid laddar direkt på GitHub Pages
-  const qrUrl = `https://qrserver.com{encodeURIComponent(swishString)}`;
-  
-  document.getElementById('swishQr').src = qrUrl;
-  document.getElementById('qrContainer').style.display = 'block';
-  document.getElementById('swishForm').style.display = 'none';
-});
+const bokadeDatum = ["2026-07-24","2026-07-25"];
+
+let idag = new Date().toISOString().split('T')[0];
+document.getElementById('datum').setAttribute('min', idag);
+
+function kollaBokatDatum() {
+    let valtDatum = document.getElementById('datum').value;
+    if (bokadeDatum.includes(valtDatum)) {
+        alert("Upptaget datum!");
+        document.getElementById('datum').value = "";
+    }
+}
+
+function valideraSteg(el, steg) {
+    let v = parseFloat(el.value) || 0;
+    el.value = Math.round(v / steg) * steg;
+    raknaUtPris();
+}
+
+function raknaUtPris() {
+    let trim = parseFloat(document.getElementById('trim').value) || 0;
+    let ogras = parseFloat(document.getElementById('ogras').value) || 0;
+    let vattna = document.getElementById('vattna').checked;
+
+    let total = (trim/10)*20 + (ogras/15)*50 + (vattna?300:0);
+    document.getElementById('summa').innerText = Math.round(total);
+}
+
+function oppnaSwish() {
+    valideraSteg(document.getElementById('trim'), 10);
+    valideraSteg(document.getElementById('ogras'), 15);
+
+    let namn = document.getElementById('namn').value.trim();
+    let adress = document.getElementById('adress').value.trim();
+    let datum = document.getElementById('datum').value;
+    let summa = document.getElementById('summa').innerText;
+
+    if (namn == "" || namn.split(" ").length < 2) {
+        alert("Skriv förnamn + efternamn!");
+        return;
+    }
+
+    if (adress == "") {
+        alert("Skriv adress!");
+        return;
+    }
+
+    if (datum == "") {
+        alert("Välj datum!");
+        return;
+    }
+
+    if (summa == "0") {
+        alert("Välj tjänst!");
+        return;
+    }
+
+    let msg = namn + " - Trädgård " + datum + ", " + adress;
+
+    let swishUrl = "swish://payment?data=" + JSON.stringify({
+        version: 1,
+        payee: { value: "0723782629" },
+        amount: { value: parseInt(summa) },
+        message: { value: msg }
+    });
+
+    window.location.href = swishUrl;
+}
 </script>
+
 </body>
 </html>
