@@ -1,236 +1,105 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Min Trädgårdsservice - Boxholm</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #1e1e1e;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,255,0,0.1);
-        }
-        h1 { color: #4CAF50; font-size: 2.5rem; margin-bottom: 5px; }
-        .location-badge {
-            background-color: #ff9800;
-            color: black;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .subtitle { color: #888; margin-bottom: 25px; }
-        .price-box {
-            background: #2a2a2a;
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 10px;
-            border-left: 5px solid #4CAF50;
-            text-align: left;
-        }
-        .price-box h3 { margin-top: 0; color: #4CAF50; }
-        .input-group {
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-        }
-        .input-group label { margin-right: 10px; font-size: 14px; color: #ccc; }
-        input[type="number"], input[type="text"], input[type="date"] {
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #444;
-            background-color: #333;
-            color: white;
-            font-size: 16px;
-        }
-        input[type="number"] { width: 80px; }
-        input[type="text"], input[type="date"] { width: 100%; box-sizing: border-box; }
-        .checkbox-group {
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-        }
-        .checkbox-group input {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-        .total-section {
-            background: #222;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 25px;
-            border: 1px dashed #4CAF50;
-        }
-        .total-price {
-            font-size: 24px;
-            font-weight: bold;
-            color: #4CAF50;
-        }
-        .btn-pay {
-            background-color: transparent;
-            color: #ff3333;
-            border: 3px solid #ff3333;
-            padding: 15px 32px;
-            font-size: 22px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 20px;
-            text-transform: uppercase;
-            transition: all 0.2s;
-        }
-        .btn-pay:hover {
-            background-color: #ff3333;
-            color: white;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trädgård - Boxholm</title>
+
+<style>
+body { font-family: sans-serif; background:#111; color:white; text-align:center; }
+.container { max-width:600px; margin:auto; background:#222; padding:20px; border-radius:15px; }
+input { width:100%; padding:10px; margin:10px 0; background:#333; color:white; border:none; }
+button { background:red; color:white; padding:15px; width:100%; font-size:20px; }
+</style>
 </head>
+
 <body>
 
 <div class="container">
-    <h1>Hjälp i Trädgården! 🌿</h1>
-    <div class="location-badge">📍 GÄLLER ENDAST I BOXHOLM</div>
-    <p class="subtitle">Boka, välj dag och räkna ut ditt pris direkt nedanför</p>
 
-    <!-- NAMN -->
-    <div class="price-box" style="border-left-color: #4CAF50;">
-        <h3>👤 Ditt namn</h3>
-        <input type="text" id="namn" placeholder="Ex: Olof Olofsson">
-    </div>
+<h1>🌿 Trädgårdshjälp</h1>
 
-    <!-- Adress -->
-    <div class="price-box" style="border-left-color: #ff9800;">
-        <h3>🏡 Din adress i Boxholm</h3>
-        <input type="text" id="adress" placeholder="Ex: Storgatan 12">
-    </div>
+<input type="text" id="namn" placeholder="Förnamn Efternamn">
+<input type="text" id="adress" placeholder="Storgatan 12, 590 10 Boxholm">
+<input type="date" id="datum">
 
-    <!-- Datum -->
-    <div class="price-box" style="border-left-color: #00bcd4;">
-        <h3>📅 Välj dag</h3>
-        <input type="date" id="datum" onchange="kollaBokatDatum()">
-    </div>
+<p>💧 Vattna växter (300 kr)</p>
+<input type="checkbox" id="vattna" onchange="rakna()">
 
-    <!-- Trimma -->
-    <div class="price-box">
-        <h3>✂️ Trimma trädgården</h3>
-        <p>20 kr per 10 meter</p>
-        <div class="input-group">
-            <input type="number" id="trim" min="0" step="10" value="0"
-            oninput="raknaUtPris()" onchange="valideraSteg(this, 10)">
-        </div>
-    </div>
+<p>🌱 Rensa ogräs (50 kr / 15m)</p>
+<input type="number" id="ogras" value="0" step="15" oninput="rakna()">
 
-    <!-- Ogräs -->
-    <div class="price-box">
-        <h3>🌱 Rensa ogräs</h3>
-        <p>50 kr för 15 meter</p>
-        <div class="input-group">
-            <input type="number" id="ogras" min="0" step="15" value="0"
-            oninput="raknaUtPris()" onchange="valideraSteg(this, 15)">
-        </div>
-    </div>
+<p>✂️ Trimma (20 kr / 10m)</p>
+<input type="number" id="trim" value="0" step="10" oninput="rakna()">
 
-    <!-- Vattna -->
-    <div class="price-box">
-        <h3>💧 Vattna växter</h3>
-        <p>300 kr för ALLA växter</p>
-        <div class="checkbox-group">
-            <input type="checkbox" id="vattna" onchange="raknaUtPris()">
-            <label>Ja tack</label>
-        </div>
-    </div>
+<h2 id="summa">0 kr</h2>
 
-    <div class="total-section">
-        <div class="total-price"><span id="summa">0</span> kr</div>
-    </div>
+<button onclick="betala()">BETALA</button>
 
-    <button class="btn-pay" onclick="oppnaSwish()">Betala Med Swish</button>
 </div>
 
 <script>
-const bokadeDatum = ["2026-07-24","2026-07-25"];
 
-let idag = new Date().toISOString().split('T')[0];
-document.getElementById('datum').setAttribute('min', idag);
-
-function kollaBokatDatum() {
-    let valtDatum = document.getElementById('datum').value;
-    if (bokadeDatum.includes(valtDatum)) {
-        alert("Upptaget datum!");
-        document.getElementById('datum').value = "";
-    }
+function rakna(){
+let v = document.getElementById('vattna').checked ? 300 : 0;
+let o = (document.getElementById('ogras').value/15)*50;
+let t = (document.getElementById('trim').value/10)*20;
+document.getElementById('summa').innerText = Math.round(v+o+t)+" kr";
 }
 
-function valideraSteg(el, steg) {
-    let v = parseFloat(el.value) || 0;
-    el.value = Math.round(v / steg) * steg;
-    raknaUtPris();
+function giltigAdress(adress){
+adress = adress.toLowerCase();
+
+let harNummer = /\d+/.test(adress); // måste ha nummer
+let harGata = /[a-zåäö]+/.test(adress); // måste ha text
+let harBoxholm = adress.includes("boxholm"); // måste vara boxholm
+
+// postnummer Boxholm (590 eller 595)
+let giltigtPostnr = /(590|595)\s?\d{2}/.test(adress);
+
+return harNummer && harGata && harBoxholm && giltigtPostnr;
 }
 
-function raknaUtPris() {
-    let trim = parseFloat(document.getElementById('trim').value) || 0;
-    let ogras = parseFloat(document.getElementById('ogras').value) || 0;
-    let vattna = document.getElementById('vattna').checked;
+function betala(){
 
-    let total = (trim/10)*20 + (ogras/15)*50 + (vattna?300:0);
-    document.getElementById('summa').innerText = Math.round(total);
+let namn = document.getElementById("namn").value.trim();
+let adress = document.getElementById("adress").value.trim();
+let datum = document.getElementById("datum").value;
+let summa = document.getElementById("summa").innerText.replace(" kr","");
+
+if(namn == "" || namn.split(" ").length < 2){
+alert("Skriv förnamn + efternamn!");
+return;
 }
 
-function oppnaSwish() {
-    valideraSteg(document.getElementById('trim'), 10);
-    valideraSteg(document.getElementById('ogras'), 15);
-
-    let namn = document.getElementById('namn').value.trim();
-    let adress = document.getElementById('adress').value.trim();
-    let datum = document.getElementById('datum').value;
-    let summa = document.getElementById('summa').innerText;
-
-    if (namn == "" || namn.split(" ").length < 2) {
-        alert("Skriv förnamn + efternamn!");
-        return;
-    }
-
-    if (adress == "") {
-        alert("Skriv adress!");
-        return;
-    }
-
-    if (datum == "") {
-        alert("Välj datum!");
-        return;
-    }
-
-    if (summa == "0") {
-        alert("Välj tjänst!");
-        return;
-    }
-
-    let msg = namn + " - Trädgård " + datum + ", " + adress;
-
-    let swishUrl = "swish://payment?data=" + JSON.stringify({
-        version: 1,
-        payee: { value: "0723782629" },
-        amount: { value: parseInt(summa) },
-        message: { value: msg }
-    });
-
-    window.location.href = swishUrl;
+if(!giltigAdress(adress)){
+alert("Skriv en riktig adress i Boxholm!\nEx: Storgatan 12, 590 10 Boxholm");
+return;
 }
+
+if(datum == ""){
+alert("Välj datum!");
+return;
+}
+
+if(summa == "0"){
+alert("Välj tjänst!");
+return;
+}
+
+let msg = namn + " - " + adress + " - " + datum;
+
+let url = "swish://payment?data=" + JSON.stringify({
+version:1,
+payee:{value:"0723782629"},
+amount:{value:parseInt(summa)},
+message:{value:msg}
+});
+
+window.location.href = url;
+
+}
+
 </script>
 
 </body>
