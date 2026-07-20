@@ -47,7 +47,6 @@ h1 {
     border-left:5px solid #4CAF50;
 }
 
-/* Snyggar till så att bara textfält och nummerfält blir stora, inte kryssrutan */
 input[type="text"], input[type="number"], input[type="date"] {
     width:100%;
     padding:10px;
@@ -159,7 +158,6 @@ function rakna(){
     document.getElementById("summa").innerText = total;
 }
 
-// 🔥 LAGAT: Borttaget dubbla tagg-starter och trasig kod!
 function betala(){
     let fornamnEl = document.getElementById("fornamn");
     let efternamnEl = document.getElementById("efternamn");
@@ -215,18 +213,21 @@ function betala(){
     }
 
     if(ogras > 0){
-        tjanster.push("Ogräs " + ogras + "h");
+        tjanster.push("Ogras " + ogras + "h");
     }
 
     if(trim > 0){
         tjanster.push("Trim " + trim + "h");
     }
 
-    let tjanstText = tjanster.join(" + ");
-    if(tjanstText === "") { tjanstText = "Trädgårdstjänst"; }
+    // 🔥 ÄNDRAT: Använder kommatecken istället för plus (+), eftersom Swish nekar specialtecken.
+    let tjanstText = tjanster.join(", ");
+    if(tjanstText === "") { tjanstText = "Tradgardstjanst"; }
 
     let nummer = "0723782629";
-    let message = tjanstText + " - " + fornamn + " " + efternamn + ", " + datum;
+    
+    // 🔥 ÄNDRAT: Gjort texten kortare (utan datum) för att hålla oss inom Swish maxgräns på 50 tecken.
+    let message = tjanstText + " - " + fornamn + " " + efternamn;
 
     let swishData = {
         version: 1,
